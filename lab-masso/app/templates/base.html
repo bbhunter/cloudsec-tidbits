@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CaatS - Cats as a top Service{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --doy-bg:           #1e1a12;
+      --doy-panel:        #2c271f;
+      --doy-card:         #201b10;
+      --doy-border:       #524b3d;
+      --doy-muted:        #655d4f;
+      --doy-text:         #e5dccb;
+      --doy-text-muted:   #a39a8b;
+      --doy-orange:       #fe9832;
+      --doy-orange-dark:  #d36f0a;
+      --doy-orange-light: #f8b572;
+    }
+    body            { background: var(--doy-bg); color: var(--doy-text); font-family: 'Courier New', 'Consolas', monospace; }
+    .navbar         { background: var(--doy-card) !important; border-bottom: 2px solid var(--doy-orange); }
+    .navbar-brand   { color: var(--doy-orange) !important; font-weight: 700; font-size: 1.3rem; letter-spacing: 0.04em; }
+    .nav-link       { color: var(--doy-text-muted) !important; }
+    .nav-link:hover { color: var(--doy-orange) !important; }
+    .card           { background: var(--doy-panel); border: 1px solid var(--doy-border); }
+    .card-header    { background: var(--doy-card); border-bottom: 1px solid var(--doy-border); color: var(--doy-text); }
+    .form-control   { background: var(--doy-card) !important; color: var(--doy-text) !important; border-color: var(--doy-border) !important; font-family: inherit; }
+    .form-control::placeholder { color: var(--doy-muted) !important; }
+    .form-control:focus { border-color: var(--doy-orange) !important; box-shadow: 0 0 0 0.2rem rgba(254,152,50,.2) !important; }
+    .btn-cat        { background: var(--doy-orange); color: #1e1a12; border: none; font-weight: 600; font-family: inherit; }
+    .btn-cat:hover  { background: var(--doy-orange-dark); color: #fff; }
+    .btn-outline-light { border-color: var(--doy-border); color: var(--doy-text-muted); }
+    .btn-outline-light:hover { background: var(--doy-panel); border-color: var(--doy-orange); color: var(--doy-orange); }
+    .btn-outline-secondary { border-color: var(--doy-border); color: var(--doy-text-muted); }
+    .btn-outline-secondary:hover { background: var(--doy-panel); color: var(--doy-text); }
+    .badge-staff    { background: var(--doy-orange-dark); color: #fff; }
+    .badge-admin    { background: #3a2a0e; color: var(--doy-orange-light); border: 1px solid var(--doy-orange-dark); }
+    .badge-member   { background: var(--doy-card); color: var(--doy-text-muted); border: 1px solid var(--doy-border); }
+    .badge-ghost    { background: var(--doy-muted); color: var(--doy-text); }
+    .text-muted     { color: var(--doy-text-muted) !important; }
+    .border-secondary { border-color: var(--doy-border) !important; }
+    hr              { border-color: var(--doy-border); }
+    .alert-danger   { background: #3d1c0e; border-color: var(--doy-orange-dark); color: var(--doy-orange-light); }
+    .alert-success  { background: #2c1e08; border-color: var(--doy-orange-dark); color: var(--doy-orange-light); }
+    .alert-info     { background: #2c271f; border-color: var(--doy-border); color: var(--doy-text-muted); }
+    .alert-warning  { background: #2e1f08; border-color: var(--doy-orange-dark); color: var(--doy-orange-light); }
+    .alert-secondary { background: var(--doy-panel); border-color: var(--doy-border); color: var(--doy-text-muted); }
+    .table          { color: var(--doy-text); }
+    .table th       { border-color: var(--doy-border); color: var(--doy-text-muted); background: var(--doy-card); }
+    .table td       { border-color: var(--doy-border); }
+    .table-hover tbody tr:hover { background: rgba(254,152,50,.06); }
+.tenant-pill    { background: var(--doy-card); border: 1px solid var(--doy-border); border-radius: 20px; padding: 2px 12px; font-size: 0.8rem; color: var(--doy-text-muted); }
+    footer          { border-top: 1px solid var(--doy-border); color: var(--doy-muted); }
+    a               { color: var(--doy-orange-light); }
+    a:hover         { color: var(--doy-orange); }
+    /* suppress Bootstrap's default bg-success / bg-info / bg-warning */
+    .bg-success     { background-color: var(--doy-orange-dark) !important; }
+    .bg-info        { background-color: var(--doy-muted) !important; color: var(--doy-text) !important; }
+    .bg-secondary   { background-color: var(--doy-card) !important; color: var(--doy-text-muted) !important; border: 1px solid var(--doy-border); }
+    .text-warning   { color: var(--doy-orange-light) !important; }
+    .text-dark      { color: #1e1a12 !important; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+{% if session.get('user') %}
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="/dashboard">&#x1F408; Caa(t)S</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/cats">Cat Extraction</a></li>
+        {% if session.user.role in ('org-admin','staff') %}
+        <li class="nav-item"><a class="nav-link" href="/directory">Directory</a></li>
+        <li class="nav-item"><a class="nav-link" href="/sso-config">SSO Config</a></li>
+        {% endif %}
+        {% if session.user.role == 'staff' %}
+        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="/admin">&#x26A1; Super-Admin</a></li>
+        {% endif %}
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <span class="tenant-pill">{{ session.user.orgName or session.user.tenantId }}</span>
+        <span class="badge {% if session.user.role == 'staff' %}badge-staff{% elif session.user.role == 'org-admin' %}badge-admin{% else %}badge-member{% endif %}">
+          {{ session.user.role }}
+        </span>
+        <span class="text-muted small">{{ session.user.email }}</span>
+        <a class="btn btn-outline-secondary btn-sm" href="/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+<main class="container py-4">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="text-center text-muted py-3 mt-4 small">
+  Caa(t)S &copy; 2025 - Cats as a top Service - Enterprise Identity Platform
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

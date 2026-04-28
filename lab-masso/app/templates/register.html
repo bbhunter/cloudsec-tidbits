@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Register - Caa(t)S{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+
+    <div class="text-center mb-4">
+      <h1 style="font-size:2rem">&#x1F638;</h1>
+      <h3 class="fw-bold">Create your Organisation</h3>
+      <p class="text-muted small">One organisation per signup. The first user becomes the Org-Admin.</p>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <div class="card">
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label text-muted small">Organisation Name</label>
+            <input type="text" class="form-control bg-dark text-light border-secondary"
+                   name="org_name" placeholder="Acme Corp" required>
+            <div class="form-text text-muted">Becomes your Tenant ID (e.g. ACME_CORP)</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Email</label>
+            <input type="email" class="form-control bg-dark text-light border-secondary"
+                   name="email" placeholder="you@yourcompany.com" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Password</label>
+            <input type="password" class="form-control bg-dark text-light border-secondary"
+                   name="password" placeholder="Min 8 characters" required minlength="8">
+          </div>
+          <button type="submit" class="btn btn-cat w-100">Create Organisation</button>
+        </form>
+        <hr class="border-secondary">
+        <a href="/" class="text-muted small">← Back to login</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

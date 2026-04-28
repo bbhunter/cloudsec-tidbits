@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Login - Caa(t)S{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+
+    <div class="text-center mb-4">
+      <h1 style="font-size:3rem">&#x1F408;</h1>
+      <h2 class="fw-bold" style="color:var(--doy-orange)">Caa(t)S</h2>
+      <p class="text-muted">Cats as a top Service - A Multi-Tenant Cats Collectibles Platform</p>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if request.args.get('registered') %}
+    <div class="alert alert-success">Account created! You can now log in.</div>
+    {% endif %}
+
+    <div class="card mb-3">
+      <div class="card-header fw-bold">Sign In</div>
+      <div class="card-body">
+        <form method="post" action="/login">
+          <div class="mb-2">
+            <input type="email" class="form-control bg-dark text-light border-secondary" name="email"
+              placeholder="Email" required>
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control bg-dark text-light border-secondary" name="password"
+              placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn btn-cat w-100">Sign In</button>
+        </form>
+        {% if idps %}
+        <hr class="border-secondary">
+        {% for idp in idps %}
+        <a href="/sso?provider={{ idp.ProviderName }}" class="btn btn-outline-light w-100 mb-2">
+          &#x1F310; Sign In with {{ idp.ProviderName }}
+        </a>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="text-center">
+      <span class="text-muted">New organisation? </span>
+      <a href="/register" style="color:var(--doy-orange)">Register here</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

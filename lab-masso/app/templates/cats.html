@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Cat Extraction - {{ user.tenantId }}{% endblock %}
+{% block content %}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+  <h3 class="mb-0">&#x1F431; Cat Extraction Feed</h3>
+  <span class="tenant-pill">Tenant: {{ user.tenantId }}</span>
+</div>
+
+<div class="alert alert-secondary small mb-4">
+  <strong>AI Engine Status:</strong> Running &#x2022;
+  <strong>Extraction Quality:</strong> Enterprise-grade &#x2022;
+  <strong>Cats in Queue:</strong> &#x221E; &#x2022;
+  <strong>Data Classification:</strong> CONFIDENTIAL - Tenant-scoped
+</div>
+
+<div class="row g-3">
+  {% for cat in cats %}
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>{{ cat.name }}</strong>
+        <span class="badge badge-staff">{{ cat.rating }}</span>
+      </div>
+      <div class="card-body p-0">
+        <img src="{{ cat.img_url }}"
+             alt="{{ cat.name }}"
+             class="w-100"
+             style="height:200px;object-fit:cover;display:block;border-bottom:1px solid var(--doy-border)">
+        <div class="p-3">
+          <table class="table table-sm mb-0 border-0 text-start">
+            <tr><td class="text-muted small">Cat ID</td><td class="font-monospace small">{{ cat.id }}</td></tr>
+            <tr><td class="text-muted small">Breed</td><td class="small">{{ cat.breed }}</td></tr>
+            <tr><td class="text-muted small">Ability</td><td class="small" style="color:var(--doy-orange-light)">{{ cat.ability }}</td></tr>
+            <tr><td class="text-muted small">Power</td><td class="font-monospace small" style="color:var(--doy-orange)">{{ cat.power }}</td></tr>
+            <tr><td class="text-muted small">Tenant</td><td class="font-monospace small" style="color:var(--doy-orange-light)">{{ user.tenantId }}</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="mt-4 p-3 rounded border border-secondary small text-muted">
+  &#x1F512; This cat dataset is scoped exclusively to tenant <code>{{ user.tenantId }}</code>. Accessing another tenant's cat data requires cross-tenant privileges.
+</div>
+
+{% endblock %}

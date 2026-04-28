@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Directory - {{ user.tenantId }}{% endblock %}
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div>
+    <h4 class="mb-0">&#x1F465; Member Directory</h4>
+    <small class="text-muted">Tenant: <code>{{ user.tenantId }}</code></small>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          {% if user.role in ('org-admin','staff') %}
+          <th>Actions</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in members %}
+        <tr>
+          <td>
+            {{ member.email }}
+            {% if member.email.endswith('@acme.org') or '\t' in member.email %}
+            <span class="badge bg-info text-dark ms-1" title="Platform support account">platform</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge {% if member.role == 'org-admin' %}badge-admin{% else %}badge-member{% endif %}">
+              {{ member.role }}
+            </span>
+          </td>
+          <td>
+            <span class="badge {% if member.status == 'CONFIRMED' %}bg-success{% elif member.status == 'EXTERNAL_PROVIDER' %}badge-ghost{% else %}bg-secondary{% endif %}">
+              {{ member.status }}
+            </span>
+          </td>
+          {% if user.role in ('org-admin','staff') %}
+          <td>
+            {% if member.get('can_impersonate', True) %}
+            <form method="post" action="/impersonate" class="d-inline">
+              <input type="hidden" name="username" value="{{ member.username }}">
+              <button type="submit" class="btn btn-sm btn-outline-warning"
+                      onclick="return confirm('Impersonate {{ member.email }}?')">
+                Impersonate
+              </button>
+            </form>
+            {% else %}
+            <span class="text-muted small" title="Seeded platform support - impersonation disabled">-</span>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mt-3 small text-muted">
+  <strong>&#x2139; Hint:</strong> Users with <code>EXTERNAL_PROVIDER</code> status were provisioned via SSO and may not be able to log in natively. They can still be impersonated.
+</div>
+
+{% endblock %}

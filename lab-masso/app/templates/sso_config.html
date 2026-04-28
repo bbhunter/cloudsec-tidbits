@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}SSO Configuration - {{ user.tenantId }}{% endblock %}
+{% block content %}
+
+<h4 class="mb-1">&#x1F510; SSO Provider Configuration</h4>
+<p class="text-muted small mb-4">Register an OIDC Identity Provider to allow your users to authenticate via your corporate SSO.</p>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<div class="row g-4">
+
+  <!-- Register form -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header fw-bold">Register New OIDC Provider</div>
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label text-muted small">Provider Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   name="provider_name" placeholder="MyCorpSSO" required>
+            <div class="form-text text-muted">Alphanumeric, no spaces. Used as the IdP identifier in Cognito.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">OIDC Issuer URL <span class="text-danger">*</span></label>
+            <input type="url" class="form-control"
+                   name="issuer_url" placeholder="https://your-oidc-server.example.com" required>
+            <div class="form-text text-muted">Must expose <code>/.well-known/openid-configuration</code>.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Client ID <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   name="client_id" placeholder="my-client-id" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Client Secret</label>
+            <input type="text" class="form-control"
+                   name="client_secret" placeholder="(optional)">
+          </div>
+          <button type="submit" class="btn btn-cat w-100">Register IdP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configured providers + info -->
+  <div class="col-md-6">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">Configured Providers</div>
+      <div class="card-body p-0">
+        {% if idps %}
+        <table class="table table-sm mb-0">
+          <thead><tr><th>Name</th><th>Type</th></tr></thead>
+          <tbody>
+            {% for idp in idps %}
+            <tr>
+              <td class="font-monospace small">{{ idp.ProviderName }}</td>
+              <td><span class="badge bg-secondary">{{ idp.ProviderType }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="p-3 text-muted small">No external providers configured yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+{% endblock %}

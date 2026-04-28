@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Caa(t)S{% endblock %}
+{% block content %}
+
+<div class="row g-4">
+
+  <!-- Welcome card -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <strong>&#x1F44B; Welcome back</strong>
+      </div>
+      <div class="card-body">
+        <h5 class="text-warning">{{ user.email }}</h5>
+        <table class="table table-sm mb-0 border-0">
+          <tbody>
+            <tr><td class="text-muted">Role</td>
+                <td><span class="badge {% if user.role == 'staff' %}badge-staff{% elif user.role == 'org-admin' %}badge-admin{% else %}badge-member{% endif %}">{{ user.role }}</span></td></tr>
+            <tr><td class="text-muted">Tenant</td><td>{{ user.orgName or user.tenantId }}</td></tr>
+            <tr><td class="text-muted">Tenant ID</td><td><code>{{ user.tenantId }}</code></td></tr>
+            <tr><td class="text-muted">Auth method</td><td>{{ user.source }}</td></tr>
+            {% if user.get('impersonated_by') %}
+            <tr><td class="text-muted">Impersonated by</td><td class="text-warning">{{ user.impersonated_by }}</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><strong>&#x26A1; Quick Actions</strong></div>
+      <div class="card-body d-flex flex-column gap-2">
+        <a href="/cats" class="btn btn-cat">&#x1F431; Extract Cats [tenant: {{ user.tenantId }}]</a>
+        {% if user.role in ('org-admin','staff') %}
+        <a href="/directory" class="btn btn-outline-light">&#x1F465; Tenant Member Directory</a>
+        <a href="/sso-config" class="btn btn-outline-light">&#x1F510; Configure SSO Provider</a>
+        {% endif %}
+        {% if user.role == 'staff' %}
+        <a href="/admin" class="btn btn-danger">&#x26A0; Super-Admin Panel</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Super-Admin Panel{% endblock %}
+{% block content %}
+
+<div class="alert alert-danger d-flex align-items-center gap-3 mb-4">
+  <span style="font-size:2rem">&#x26A0;</span>
+  <div>
+    <strong>Super-Admin Access Granted</strong><br>
+    <small>You are authenticated as <code>{{ user.email }}</code> ({{ user.role }}) via <em>{{ user.source }}</em>.</small>
+  </div>
+</div>
+
+<!-- FLAG -->
+<div class="card border-warning mb-4">
+  <div class="card-header text-warning fw-bold">&#x1F3C1; Capture The Flag</div>
+  <div class="card-body">
+    <p class="text-muted small">Super-Admin access confirmed. Here is your flag:</p>
+    <pre class="p-3 rounded border border-warning" style="background:#1a1200;color:#f1c40f;font-size:1.1rem;letter-spacing:0.05em">{{ flag }}</pre>
+    <p class="text-muted small mt-2">
+      You reached this panel by exploiting one of the following identity vulnerabilities in this platform:<br>
+      <strong>A)</strong> Ghost User injection (Pre-Auth trigger asymmetry) + Impersonation bypass<br>
+      <strong>B)</strong> Email control character bypass (tab suffix, Pre-Auth comparison failure)
+    </p>
+  </div>
+</div>
+
+<!-- All users across tenants -->
+<div class="card">
+  <div class="card-header fw-bold">&#x1F465; All Users - Cross-Tenant View</div>
+  <div class="card-body p-0">
+    <table class="table table-sm mb-0">
+      <thead>
+        <tr>
+          <th>Username</th><th>Email</th><th>Tenant ID</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in all_users %}
+        <tr>
+          <td class="font-monospace small">{{ u.username }}</td>
+          <td class="small">{{ u.email }}</td>
+          <td><code class="small">{{ u.tenantId }}</code></td>
+          <td><span class="badge {% if u.status == 'CONFIRMED' %}badge-staff{% elif u.status == 'FORCE_CHANGE_PASSWORD' %}badge-admin{% else %}badge-member{% endif %}">{{ u.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
