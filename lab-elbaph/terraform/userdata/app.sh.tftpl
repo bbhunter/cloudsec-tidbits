@@ -1,0 +1,46 @@
+#!/bin/bash
+set -euxo pipefail
+
+dnf update -y
+dnf install -y golang bind-utils
+
+install -d -m 0755 /opt/elbaph/frontend/assets
+install -d -m 0755 /opt/elbaph/frontend/errors
+
+%{ for path, content in app_files ~}
+install -d -m 0755 "$(dirname "/opt/elbaph/${path}")"
+cat <<'EOF_FILE' | base64 -d > "/opt/elbaph/${path}"
+${content}
+EOF_FILE
+%{ endfor ~}
+
+# cloud-init runs without HOME; Go needs a writable build cache (Go 1.20+).
+export HOME=/root
+export GOCACHE=/root/.cache/go-build
+mkdir -p "$GOCACHE"
+
+cd /opt/elbaph
+/usr/bin/go build -o /opt/elbaph/server /opt/elbaph/web.go
+
+cat >/etc/systemd/system/elbaph-web.service <<EOF_SERVICE
+[Unit]
+Description=ELBaph lab web application
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/elbaph
+Environment=APP_MODE=${app_mode}
+Environment=PORT=${listen_port}
+Environment=OPS_LINK_URL=${ops_link_url}
+ExecStart=/opt/elbaph/server
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF_SERVICE
+
+systemctl daemon-reload
+systemctl enable elbaph-web.service
+systemctl start elbaph-web.service

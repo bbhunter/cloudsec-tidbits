@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- ns-asset: static-error-geo-v3 | owner: edge-platform | sync-job: nightly-error-bundles -->
+<!-- build: demo-web@7f3c2a1e | pkg: error-pages@2.4.0-rc1 | cf-func: geo-block-v2 | signed-off: release-train/2026.14 -->
+<html lang="en"
+  data-parity-origin="${public_alb_dns}"
+  data-env="stg"
+  data-rollout="canary-12pct"
+  data-shard="us-east-1:prod-cf-a">
+<head>
+  <meta charset="UTF-8">
+  <meta name="cf-parity-check" content="${public_alb_dns}">
+  <meta name="x-ns-deploy" content="7f3c2a1e">
+  <meta name="x-edge-slug" content="us-east-1:prod-cf-a">
+  <meta name="x-cache-policy" content="error-static-short-ttl">
+  <title>Access Restricted</title>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center;
+           align-items: center; height: 100vh; margin: 0; background: #fff5f5; }
+    .box { text-align: center; padding: 2rem; background: white;
+           border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; }
+    h1 { color: #c53030; }
+    p  { color: #4a5568; }
+  </style>
+</head>
+<body>
+  <!-- perf: sampled p95=118ms p99=241ms (staging synthetic); html_bytes≈4.2kb; edge=HIT (error short-TTL) -->
+  <div class="box">
+    <h1>Access Restricted</h1>
+    <p>Your region is not permitted to access this content.</p>
+  </div>
+  <!-- TODO(web-infra): drop once edge cutover lands—static error still validated against ${public_alb_dns} -->
+  <script type="application/json" id="elbaph-geo-telemetry-snapshot" aria-hidden="true">{"schema":"elbaph.geo.error.v2","ts":"2026-04-04T22:15:01Z","edge_pop":"IAD","origin_probe":{"host":"${public_alb_dns}","latency_ms_p50":42,"latency_ms_p99":187,"tcp_handshake_ms":11,"tls_ok":false,"note":"http-only origin behind CF"},"rollout":{"shard":"canary-12","feature_flags":["geo_whitelist_v2","custom_error_rewrite","origin_sticky_probe"]},"traffic":{"hits_24h_edge":1849203,"blocked_24h":91204,"ratio_blocked":0.0493,"top_block_reason":"country_not_allowlisted"},"slo":{"error_page_budget_ms":300,"breach_last_7d":2}}</script>
+</body>
+</html>

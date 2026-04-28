@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }}</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous">
+  <style>
+    .result-shell {
+      background: #111827;
+      color: #d1fae5;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      min-height: 260px;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    .label-chip {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.875rem;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="/">ELBaph lab</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/diagnostics">Diagnostics</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ .OpsLinkURL }}" target="_blank" rel="noreferrer">Ops</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="p-5 mb-4 bg-white rounded-3 border">
+      <div class="container-fluid py-2">
+        <span class="label-chip">public web</span>
+        <span class="label-chip">dns tooling</span>
+        <span class="label-chip">manifest support</span>
+        <h1 class="display-6 fw-bold mt-3">Web-based dig console</h1>
+        <p class="col-md-9 fs-5 text-secondary">
+          Run quick DNS lookups for internal hostnames and callback targets.
+          The support team uses this page to verify routing during onboarding.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <h2 class="h4 mb-3">Lookup target</h2>
+            <form method="post" action="/">
+              <div class="mb-3">
+                <label class="form-label" for="target">Domain or host</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">dig +short</span>
+                  <input class="form-control" id="target" name="target" value="{{ .Target }}" placeholder="example.com">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg w-100">Run lookup</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h4 mb-0">Execution result</h2>
+              <span class="text-muted small">{{ .GeneratedAt }}</span>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small mb-2">Executed command</div>
+              <div class="result-shell">{{ if .Command }}$ {{ .Command }}{{ else }}$ dig +short example.com{{ end }}</div>
+            </div>
+            <div>
+              <div class="text-muted small mb-2">Command output</div>
+              <div class="result-shell">{{ if .Result }}{{ .Result }}{{ else }}Run a lookup to inspect DNS output here.{{ end }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+</html>
