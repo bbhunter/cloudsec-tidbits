@@ -9,9 +9,16 @@ Each blogpost will discuss a specific vulnerability resulting from an insecure c
 
 ### Available episodes:
 
-- [Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
-- [Tidbit #2 - Tampering User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
-- [Tidbit #3 - Messing around with AWS Batch For Privilege Escalations](https://blog.doyensec.com/2023/06/13/messing-around-with-aws-batch-for-privilege-escalations.html)
+#### Season 1 
+
+- [S1. Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
+- [S1. Tidbit #2 - Tampering User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
+- [S1. Tidbit #3 - Messing around with AWS Batch For Privilege Escalations](https://blog.doyensec.com/2023/06/13/messing-around-with-aws-batch-for-privilege-escalations.html)
+
+#### Season 2
+
+- [S2. Tidbit #1 - The Danger of Multi-SSO AWS Cognito User Pools](https://blog.doyensec.com/2026/05/05/cloudsectidbits-masso-cognito-sso.html)
+
 
 <hr>
 
